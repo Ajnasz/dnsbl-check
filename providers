@@ -1,0 +1,67 @@
+# should work
+dnsbl.dronebl.org
+access.redhawk.org
+b.barracudacentral.org
+cbl.abuseat.org
+csi.cloudmark.com
+dnsbl-1.uceprotect.net
+dnsbl-2.uceprotect.net
+dnsbl-3.uceprotect.net
+db.wpbl.info
+drone.abuse.ch
+ix.dnsbl.manitu.net
+korea.services.net
+multi.surbl.org
+opm.tornevall.org
+psbl.surriel.com
+truncate.gbudb.net
+rbl.abuse.ro
+rbl.efnetrbl.org
+rbl.suresupport.com
+rbl.spamlab.com
+spam.pedantic.org
+spamguard.leadmon.net
+tor.dan.me.uk
+ubl.unsubscore.com
+virbl.bit.nl
+
+bogons.cymru.com
+
+## imp.ch
+# woody.ch listed on it's website
+spamrbl.imp.ch
+dnsrbl.imp.ch
+wormrbl.imp.ch
+uribl.swinog.ch
+balcklist.woody.ch
+
+# rbl.jp
+virus.rbl.jp
+short.rbl.jp
+
+## spamrats.com
+dyna.spamrats.com
+noptr.spamrats.com
+spam.spamrats.com
+
+## zen combines sbl, xbl, pbl
+# pbl.spamhaus.org
+# sbl.spamhaus.org
+# xbl.spamhaus.org
+zen.spamhaus.org
+
+## dnsbl combines the others
+# spam.sorbs.net
+# smtp.dnsbl.sorbs.net
+# socks.dnsbl.sorbs.net
+# spam.dnsbl.sorbs.net
+# web.dnsbl.sorbs.net
+# zombie.dnsbl.sorbs.net
+dnsbl.sorbs.net
+
+#######
+# maybe
+#######
+blackholes.mail-abuse.org
+rbl-plus.mail-abuse.org
+relays.mail-abuse.org
