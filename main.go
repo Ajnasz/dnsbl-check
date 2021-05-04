@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net"
 	"os"
 	"strings"
 	"sync"
@@ -61,6 +60,35 @@ type LookupResult struct {
 	Provider      DNSBLProvider
 }
 
+func lookup(address string, provider DNSBLProvider) LookupResult {
+	isListed, err := provider.IsBlacklisted(address)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if isListed {
+		desc, err := provider.GetReason(address)
+
+		if err != nil {
+			fmt.Println("ERROR", err.Error())
+		}
+
+		return LookupResult{
+			Address:       address,
+			IsBlacklisted: true,
+			Provider:      provider,
+			Reason:        desc,
+		}
+	}
+
+	return LookupResult{
+		Address:       address,
+		IsBlacklisted: false,
+		Provider:      provider,
+	}
+}
+
 func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult {
 	var wg sync.WaitGroup
 	wg.Add(len(providers))
@@ -70,33 +98,7 @@ func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult 
 	for _, provider := range providers {
 		go func(provider DNSBLProvider) {
 			defer wg.Done()
-			isListed, err := provider.IsBlacklisted(address)
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-			if isListed {
-				desc, err := provider.GetReason(address)
-
-				if err != nil {
-					fmt.Println("ERROR", err.Error())
-				}
-
-				results <- LookupResult{
-					Address:       address,
-					IsBlacklisted: true,
-					Provider:      provider,
-					Reason:        desc,
-				}
-				return
-			}
-
-			results <- LookupResult{
-				Address:       address,
-				IsBlacklisted: false,
-				Provider:      provider,
-			}
+			results <- lookup(address, provider)
 		}(provider)
 	}
 
@@ -106,10 +108,6 @@ func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult 
 	}()
 
 	return results
-}
-
-func isValidIP(address string) bool {
-	return net.ParseIP(address) != nil
 }
 
 func isCommentLine(line string) bool {
@@ -165,6 +163,22 @@ func getProviders(fn string) ([]string, error) {
 	return noComment, nil
 }
 
+func processLookupResult(result LookupResult) {
+	if result.IsBlacklisted {
+		var reason string
+
+		if result.Reason == "" {
+			reason = "unkown reason"
+		} else {
+			reason = result.Reason
+		}
+
+		fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), reason))
+	} else {
+		fmt.Println(fmt.Sprintf("OK\t%s\t%s", result.Address, result.Provider.GetName()))
+	}
+}
+
 func main() {
 	var domainsFile = flag.String("p", "./providers", "path to file which stores list of dnsbl checks")
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
@@ -198,19 +212,7 @@ func main() {
 		go func(address string) {
 			defer addressWg.Done()
 			for result := range getBlacklists(address, providers) {
-				if result.IsBlacklisted {
-					var reason string
-
-					if result.Reason == "" {
-						reason = "unkown reason"
-					} else {
-						reason = result.Reason
-					}
-
-					fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), reason))
-				} else {
-					fmt.Println(fmt.Sprintf("OK\t%s\t%s", result.Address, result.Provider.GetName()))
-				}
+				processLookupResult(result)
 			}
 		}(address)
 	}
