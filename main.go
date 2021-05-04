@@ -64,7 +64,9 @@ type LookupResult struct {
 func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult {
 	var wg sync.WaitGroup
 	wg.Add(len(providers))
-	errChan := make(chan LookupResult)
+
+	results := make(chan LookupResult)
+
 	for _, provider := range providers {
 		go func(provider DNSBLProvider) {
 			defer wg.Done()
@@ -81,7 +83,7 @@ func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult 
 					fmt.Println("ERROR", err.Error())
 				}
 
-				errChan <- LookupResult{
+				results <- LookupResult{
 					Address:       address,
 					IsBlacklisted: true,
 					Provider:      provider,
@@ -90,7 +92,7 @@ func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult 
 				return
 			}
 
-			errChan <- LookupResult{
+			results <- LookupResult{
 				Address:       address,
 				IsBlacklisted: false,
 				Provider:      provider,
@@ -100,18 +102,18 @@ func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult 
 
 	go func() {
 		wg.Wait()
-		close(errChan)
+		close(results)
 	}()
 
-	return errChan
+	return results
 }
 
 func isValidIP(address string) bool {
 	return net.ParseIP(address) != nil
 }
 
-func isNotCommentLine(line string) bool {
-	return !strings.HasPrefix(line, "#")
+func isCommentLine(line string) bool {
+	return strings.HasPrefix(line, "#")
 }
 
 func filterString(lines []string, test func(string) bool) []string {
@@ -136,8 +138,15 @@ func mapString(lines []string, conv func(string) string) []string {
 	return out
 }
 
-func isNotEmptyString(str string) bool {
-	return str != ""
+func isEmptyString(str string) bool {
+	return str == ""
+}
+
+func negate(f func(string) bool) func(string) bool {
+	return func(str string) bool {
+		r := f(str)
+		return !r
+	}
 }
 
 func getProviders(fn string) ([]string, error) {
@@ -149,8 +158,11 @@ func getProviders(fn string) ([]string, error) {
 
 	lines := strings.Split(string(f), "\n")
 
-	return filterString(filterString(mapString(lines, strings.TrimSpace), isNotEmptyString), isNotCommentLine), nil
+	trimmed := mapString(lines, strings.TrimSpace)
+	noEmpty := filterString(trimmed, negate(isEmptyString))
+	noComment := filterString(noEmpty, negate(isCommentLine))
 
+	return noComment, nil
 }
 
 func main() {
@@ -177,7 +189,7 @@ func main() {
 		providers = append(providers, provider)
 	}
 
-	addresses := filterString(strings.Split(*addressesParam, ","), isNotEmptyString)
+	addresses := filterString(strings.Split(*addressesParam, ","), negate(isEmptyString))
 
 	var addressWg sync.WaitGroup
 	addressWg.Add(len(addresses))
