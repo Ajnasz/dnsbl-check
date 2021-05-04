@@ -89,17 +89,17 @@ func lookup(address string, provider DNSBLProvider) LookupResult {
 	}
 }
 
-func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult {
+func getBlacklists(addresses []string, providers []DNSBLProvider) chan LookupResult {
 	var wg sync.WaitGroup
-	wg.Add(len(providers))
-
 	results := make(chan LookupResult)
-
-	for _, provider := range providers {
-		go func(provider DNSBLProvider) {
-			defer wg.Done()
-			results <- lookup(address, provider)
-		}(provider)
+	for _, address := range addresses {
+		for _, provider := range providers {
+			wg.Add(1)
+			go func(address string, provider DNSBLProvider) {
+				defer wg.Done()
+				results <- lookup(address, provider)
+			}(address, provider)
+		}
 	}
 
 	go func() {
@@ -184,7 +184,6 @@ func main() {
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()
-
 	list, err := getProviders(*domainsFile)
 
 	if err != nil {
@@ -205,16 +204,7 @@ func main() {
 
 	addresses := filterString(strings.Split(*addressesParam, ","), negate(isEmptyString))
 
-	var addressWg sync.WaitGroup
-	addressWg.Add(len(addresses))
-
-	for _, address := range addresses {
-		go func(address string) {
-			defer addressWg.Done()
-			for result := range getBlacklists(address, providers) {
-				processLookupResult(result)
-			}
-		}(address)
+	for result := range getBlacklists(addresses, providers) {
+		processLookupResult(result)
 	}
-	addressWg.Wait()
 }
