@@ -58,23 +58,24 @@ type LookupResult struct {
 	Address       string
 	Reason        string
 	Provider      DNSBLProvider
+	Error         error
 }
 
 func lookup(address string, provider DNSBLProvider) LookupResult {
 	isListed, err := provider.IsBlacklisted(address)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return LookupResult{
+			Provider: provider,
+			Address:  address,
+			Error:    err,
+		}
 	}
 
 	if isListed {
 		desc, err := provider.GetReason(address)
 
-		if err != nil {
-			fmt.Println("ERROR", err.Error())
-		}
-
 		return LookupResult{
+			Error:         err,
 			Address:       address,
 			IsBlacklisted: true,
 			Provider:      provider,
@@ -164,6 +165,10 @@ func getProviders(fn string) ([]string, error) {
 }
 
 func processLookupResult(result LookupResult) {
+	if result.Error != nil {
+		fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), result.Error))
+		return
+	}
 	if result.IsBlacklisted {
 		var reason string
 
@@ -173,7 +178,7 @@ func processLookupResult(result LookupResult) {
 			reason = result.Reason
 		}
 
-		fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), reason))
+		fmt.Println(fmt.Sprintf("FAIL\t%s\t%s\t%s", result.Address, result.Provider.GetName(), reason))
 	} else {
 		fmt.Println(fmt.Sprintf("OK\t%s\t%s", result.Address, result.Provider.GetName()))
 	}
@@ -187,7 +192,7 @@ func main() {
 	list, err := getProviders(*domainsFile)
 
 	if err != nil {
-		fmt.Println("Error reading domains")
+		fmt.Fprintln(os.Stderr, "Error reading domains")
 		os.Exit(1)
 	}
 
