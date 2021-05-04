@@ -1,3 +1,3 @@
-module github.com/Ajnasz/rbl-check
+module github.com/Ajnasz/dnsbl-check
 
 go 1.16
