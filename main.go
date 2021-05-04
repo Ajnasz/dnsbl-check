@@ -48,62 +48,9 @@ func reverseIPAddress(str string) string {
 
 // DNSBLProvider interface should be implemented to be able to query a provider
 type DNSBLProvider interface {
-	GetAddress(string) string
 	GetName() string
-}
-
-// GeneralDNSBLProvider implements DNSBLProvider
-// URL is a required property which should be the ending of the dnsbl hostname
-type GeneralDNSBLProvider struct {
-	URL string
-}
-
-// GetName returns the name of the provider
-// Now it's the URL
-func (provider GeneralDNSBLProvider) GetName() string {
-	return provider.URL
-}
-
-// GetAddress returns the address what should be queried
-// Combines the IP address (octets reversed) and the provider URL
-func (provider GeneralDNSBLProvider) GetAddress(ip string) string {
-	return fmt.Sprintf("%s.%s", reverseIPAddress(ip), provider.URL)
-}
-
-func getReason(ip string, provider DNSBLProvider) ([]string, error) {
-	texts, err := net.LookupTXT(provider.GetAddress(ip))
-	if err != nil {
-		return nil, err
-	}
-
-	return texts, nil
-}
-
-func isNoHostError(err error) bool {
-	if serr, ok := err.(*net.DNSError); ok {
-		return serr.IsNotFound
-	}
-
-	return false
-}
-
-func isBlacklistedIP(ip string, provider DNSBLProvider) (bool, error) {
-	names, err := net.LookupIP(provider.GetAddress(ip))
-
-	if err != nil {
-		if isNoHostError(err) {
-			return false, nil
-		}
-
-		return false, nil
-	}
-
-	if len(names) == 0 {
-		return false, nil
-	}
-
-	return true, nil
-
+	IsBlacklistedIP(string) (bool, error)
+	GetReason(string) (string, error)
 }
 
 // LookupResult stores the query result with reason
@@ -121,26 +68,24 @@ func getBlacklists(ip string, providers []DNSBLProvider) chan LookupResult {
 	for _, provider := range providers {
 		go func(provider DNSBLProvider) {
 			defer wg.Done()
-			isListed, err := isBlacklistedIP(ip, provider)
+			isListed, err := provider.IsBlacklistedIP(ip)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
 
 			if isListed {
-				desc, err := getReason(ip, provider)
+				desc, err := provider.GetReason(ip)
 
 				if err != nil {
-					if !isNoHostError(err) {
-						fmt.Println("ERROR", err.Error())
-					}
+					fmt.Println("ERROR", err.Error())
 				}
 
 				errChan <- LookupResult{
 					IP:            ip,
 					IsBlacklisted: true,
 					Provider:      provider,
-					Reason:        strings.Join(desc, " "),
+					Reason:        desc,
 				}
 				return
 			}
