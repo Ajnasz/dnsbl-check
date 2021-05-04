@@ -49,40 +49,40 @@ func reverseIPAddress(str string) string {
 // DNSBLProvider interface should be implemented to be able to query a provider
 type DNSBLProvider interface {
 	GetName() string
-	IsBlacklistedIP(string) (bool, error)
+	IsBlacklisted(string) (bool, error)
 	GetReason(string) (string, error)
 }
 
 // LookupResult stores the query result with reason
 type LookupResult struct {
 	IsBlacklisted bool
-	IP            string
+	Address       string
 	Reason        string
 	Provider      DNSBLProvider
 }
 
-func getBlacklists(ip string, providers []DNSBLProvider) chan LookupResult {
+func getBlacklists(address string, providers []DNSBLProvider) chan LookupResult {
 	var wg sync.WaitGroup
 	wg.Add(len(providers))
 	errChan := make(chan LookupResult)
 	for _, provider := range providers {
 		go func(provider DNSBLProvider) {
 			defer wg.Done()
-			isListed, err := provider.IsBlacklistedIP(ip)
+			isListed, err := provider.IsBlacklisted(address)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
 
 			if isListed {
-				desc, err := provider.GetReason(ip)
+				desc, err := provider.GetReason(address)
 
 				if err != nil {
 					fmt.Println("ERROR", err.Error())
 				}
 
 				errChan <- LookupResult{
-					IP:            ip,
+					Address:       address,
 					IsBlacklisted: true,
 					Provider:      provider,
 					Reason:        desc,
@@ -91,7 +91,7 @@ func getBlacklists(ip string, providers []DNSBLProvider) chan LookupResult {
 			}
 
 			errChan <- LookupResult{
-				IP:            ip,
+				Address:       address,
 				IsBlacklisted: false,
 				Provider:      provider,
 			}
@@ -106,8 +106,8 @@ func getBlacklists(ip string, providers []DNSBLProvider) chan LookupResult {
 	return errChan
 }
 
-func isValidIP(ip string) bool {
-	return net.ParseIP(ip) != nil
+func isValidIP(address string) bool {
+	return net.ParseIP(address) != nil
 }
 
 func isNotCommentLine(line string) bool {
@@ -155,7 +155,7 @@ func getProviders(fn string) ([]string, error) {
 
 func main() {
 	var domainsFile = flag.String("p", "./providers", "path to file which stores list of dnsbl checks")
-	var ipAddress = flag.String("i", "", "IP Address to check, separate by comma for a list")
+	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()
 
@@ -177,13 +177,15 @@ func main() {
 		providers = append(providers, provider)
 	}
 
-	var ipwg sync.WaitGroup
-	ipAddresses := filterString(filterString(strings.Split(*ipAddress, ","), isNotEmptyString), isValidIP)
-	ipwg.Add(len(ipAddresses))
-	for _, ip := range ipAddresses {
-		go func(ip string) {
-			defer ipwg.Done()
-			for result := range getBlacklists(ip, providers) {
+	addresses := filterString(strings.Split(*addressesParam, ","), isNotEmptyString)
+
+	var addressWg sync.WaitGroup
+	addressWg.Add(len(addresses))
+
+	for _, address := range addresses {
+		go func(address string) {
+			defer addressWg.Done()
+			for result := range getBlacklists(address, providers) {
 				if result.IsBlacklisted {
 					var reason string
 
@@ -193,12 +195,12 @@ func main() {
 						reason = result.Reason
 					}
 
-					fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.IP, result.Provider.GetName(), reason))
+					fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), reason))
 				} else {
-					fmt.Println(fmt.Sprintf("OK\t%s\t%s", result.IP, result.Provider.GetName()))
+					fmt.Println(fmt.Sprintf("OK\t%s\t%s", result.Address, result.Provider.GetName()))
 				}
 			}
-		}(ip)
+		}(address)
 	}
-	ipwg.Wait()
+	addressWg.Wait()
 }

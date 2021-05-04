@@ -20,21 +20,29 @@ type GeneralDNSBLProvider struct {
 	URL string
 }
 
+// getAddress returns the address what should be queried
+// Combines the IP address (octets reversed) and the provider URL
+func (provider GeneralDNSBLProvider) getAddress(address string) string {
+	if provider.isIPAddress(address) {
+		return fmt.Sprintf("%s.%s", reverseIPAddress(address), provider.URL)
+	}
+
+	return fmt.Sprintf("%s.%s", address, provider.URL)
+}
+
+func (provider GeneralDNSBLProvider) isIPAddress(address string) bool {
+	return net.ParseIP(address) != nil
+}
+
 // GetName returns the name of the provider
 // Now it's the URL
 func (provider GeneralDNSBLProvider) GetName() string {
 	return provider.URL
 }
 
-// getAddress returns the address what should be queried
-// Combines the IP address (octets reversed) and the provider URL
-func (provider GeneralDNSBLProvider) getAddress(ip string) string {
-	return fmt.Sprintf("%s.%s", reverseIPAddress(ip), provider.URL)
-}
-
 // GetReason returns the block reason for an IP address
-func (provider GeneralDNSBLProvider) GetReason(ip string) (string, error) {
-	texts, err := net.LookupTXT(provider.getAddress(ip))
+func (provider GeneralDNSBLProvider) GetReason(address string) (string, error) {
+	texts, err := net.LookupTXT(provider.getAddress(address))
 	if err != nil {
 		if isNoHostError(err) {
 			return "", nil
@@ -46,9 +54,9 @@ func (provider GeneralDNSBLProvider) GetReason(ip string) (string, error) {
 	return strings.Join(texts, ""), nil
 }
 
-// IsBlacklistedIP returns if the IP address listed at a provider
-func (provider GeneralDNSBLProvider) IsBlacklistedIP(ip string) (bool, error) {
-	names, err := net.LookupIP(provider.getAddress(ip))
+// IsBlacklisted returns if the IP address listed at a provider
+func (provider GeneralDNSBLProvider) IsBlacklisted(address string) (bool, error) {
+	names, err := net.LookupIP(provider.getAddress(address))
 
 	if err != nil {
 		if isNoHostError(err) {
