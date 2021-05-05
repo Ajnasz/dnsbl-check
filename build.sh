@@ -45,7 +45,7 @@ remove() {
 
 REMOVE=0
 OSLIST="linux darwin"
-ARCHLIST="amd64 arm64"
+ARCHLIST="amd64 arm64 arm"
 BUILD_DIR="./build"
 BUILD=0
 
