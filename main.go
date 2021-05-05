@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"sync"
@@ -148,8 +149,23 @@ func negate(f func(string) bool) func(string) bool {
 	}
 }
 
+func getProvidersFromFile(fn string) ([]byte, error) {
+	return os.ReadFile(fn)
+}
+
+func getProvidersFromStdin() ([]byte, error) {
+	return io.ReadAll(os.Stdin)
+}
+
 func getProviders(fn string) ([]string, error) {
-	f, err := os.ReadFile(fn)
+	var f []byte
+	var err error
+
+	if fn == "-" {
+		f, err = getProvidersFromStdin()
+	} else {
+		f, err = getProvidersFromFile(fn)
+	}
 
 	if err != nil {
 		return nil, err
@@ -185,7 +201,7 @@ func processLookupResult(result LookupResult) {
 }
 
 func main() {
-	var domainsFile = flag.String("p", "./providers", "path to file which stores list of dnsbl checks")
+	var domainsFile = flag.String("p", "./providers", "path to file which stores list of dnsbl checks, - for stdin")
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()

@@ -58,10 +58,20 @@ awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers > i
 Then you can test if a provider is working - responds to a test query:
 
 ```sh
-./dnsbl-check -p ipv4providers -i 127.0.0.2 > ipv4verified
+./dnsbl-check -p ipv4providers -i 127.0.0.2 | awk '$1 == "ERR" { print $3 }' > ipv4verified
 ```
 
-Then with that list you can check if your IP address is blacklisted
+Then with that list you can check if your IP address is blacklisted:
+
 ```sh
 ./dnsbl-check -p ip4verified -i 1.2.3.4
 ```
+
+It can be piped into one command:
+```sh
+awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers | \
+./dnsbl-check -p ipv4providers -i 127.0.0.2 | awk '$1 == "ERR" { print $3 }' | \
+./dnsbl-check -p ip4verified -i 1.2.3.4
+```
+
+However it's recommended to keep the used provider list separetly, to save the resources of the providers.
