@@ -1,67 +1,345 @@
-# should work
-dnsbl.dronebl.org
-access.redhawk.org
-b.barracudacentral.org
-cbl.abuseat.org
-csi.cloudmark.com
-dnsbl-1.uceprotect.net
-dnsbl-2.uceprotect.net
-dnsbl-3.uceprotect.net
-db.wpbl.info
-drone.abuse.ch
-ix.dnsbl.manitu.net
-korea.services.net
-multi.surbl.org
-opm.tornevall.org
-psbl.surriel.com
-truncate.gbudb.net
-rbl.abuse.ro
-rbl.efnetrbl.org
-rbl.suresupport.com
-rbl.spamlab.com
-spam.pedantic.org
-spamguard.leadmon.net
-tor.dan.me.uk
-ubl.unsubscore.com
-virbl.bit.nl
-
-bogons.cymru.com
-
-## imp.ch
-# woody.ch listed on it's website
-spamrbl.imp.ch
-dnsrbl.imp.ch
-wormrbl.imp.ch
-uribl.swinog.ch
-balcklist.woody.ch
-
-# rbl.jp
-virus.rbl.jp
-short.rbl.jp
-
-## spamrats.com
-dyna.spamrats.com
-noptr.spamrats.com
-spam.spamrats.com
-
-## zen combines sbl, xbl, pbl
-# pbl.spamhaus.org
-# sbl.spamhaus.org
-# xbl.spamhaus.org
-zen.spamhaus.org
-
-## dnsbl combines the others
-# spam.sorbs.net
-# smtp.dnsbl.sorbs.net
-# socks.dnsbl.sorbs.net
-# spam.dnsbl.sorbs.net
-# web.dnsbl.sorbs.net
-# zombie.dnsbl.sorbs.net
-dnsbl.sorbs.net
-
-#######
-# maybe
-#######
-blackholes.mail-abuse.org
-rbl-plus.mail-abuse.org
-relays.mail-abuse.org
+0spamtrust.fusionzero.com	ipv4	-	-	w
+bl.0spam.org	ipv4	-	-	b
+0spam.fusionzero.com	ipv4	-	-	b
+nbl.0spam.org	ipv4	-	-	b
+0spam-n.fusionzero.com	ipv4	-	-	b
+url.0spam.org	-	-	dom	b
+0spamurl.fusionzero.com	-	-	dom	b
+uribl.zeustracker.abuse.ch	-	-	dom	b
+ipbl.zeustracker.abuse.ch	ipv4	-	-	b
+contacts.abuse.net	-	-	dom	i
+rbl.abuse.ro	ipv4	-	-	b
+uribl.abuse.ro	-	-	dom	b
+(hidden)	ipv4	ipv6	-	b
+(hidden)	ipv4	ipv6	-	b
+(hidden)	ipv4	ipv6	-	b
+(hidden)	ipv4	ipv6	dom	b
+(hidden)	ipv4	ipv6	-	b
+(hidden)	ipv4	-	-	b
+(hidden)	ipv4	ipv6	dom	w
+abuse-contacts.abusix.org	ipv4	-	-	i
+spam.dnsbl.anonmails.de	ipv4	-	-	b
+dnsbl.anticaptcha.net	ipv4	-	-	b
+dnsbl6.anticaptcha.net	-	ipv6	-	b
+orvedb.aupads.org	ipv4	-	-	b
+rsbl.aupads.org	ipv4	-	-	b
+block.ascams.com	ipv4	-	-	b
+superblock.ascams.com	ipv4	-	-	b
+aspews.ext.sorbs.net	ipv4	-	-	b
+ips.backscatterer.org	ipv4	-	-	b
+b.barracudacentral.org	ipv4	-	-	b
+bb.barracudacentral.org	ipv4	-	-	b
+list.bbfh.org	ipv4	-	-	b
+l1.bbfh.ext.sorbs.net	ipv4	-	-	b
+l2.bbfh.ext.sorbs.net	ipv4	-	-	b
+l3.bbfh.ext.sorbs.net	ipv4	-	-	b
+l4.bbfh.ext.sorbs.net	ipv4	-	-	b
+all.ascc.dnsbl.bit.nl	ipv4	-	-	i
+all.v6.ascc.dnsbl.bit.nl	-	ipv6	-	i
+all.dnsbl.bit.nl	ipv4	-	-	i
+ipv6.all.dnsbl.bit.nl	-	ipv6	-	i
+bitonly.dnsbl.bit.nl	ipv4	ipv6	-	i
+blackholes.tepucom.nl	ipv4	-	-	b
+blacklist.netcore.co.in	-	-	dom	b
+rbl.blakjak.net	ipv4	-	-	b
+netscan.rbl.blockedservers.com	ipv4	-	-	b
+rbl.blockedservers.com	ipv4	-	-	b
+spam.rbl.blockedservers.com	ipv4	-	-	b
+list.blogspambl.com	ipv4	-	-	b
+bsb.empty.us	ipv4	-	dom	b
+bsb.spamlookup.net	ipv4	-	dom	b
+query.bondedsender.org	ipv4	-	-	w
+plus.bondedsender.org	ipv4	-	-	w
+dnsbl1.dnsbl.borderware.com	ipv4	-	-	b
+dnsbl2.dnsbl.borderware.com	ipv4	-	-	b
+dnsbl3.dnsbl.borderware.com	ipv4	-	-	b
+dul.dnsbl.borderware.com	ipv4	-	-	b
+black.dnsbl.brukalai.lt	ipv4	-	dom	b
+light.dnsbl.brukalai.lt	ipv4	-	dom	b
+white.dnsbl.brukalai.lt	ipv4	-	dom	w
+blacklist.sci.kun.nl	ipv4	-	-	b
+whitelist.sci.kun.nl	ipv4	-	-	w
+dul.blackhole.cantv.net	ipv4	-	dom	b
+hog.blackhole.cantv.net	ipv4	-	dom	b
+rhsbl.blackhole.cantv.net	ipv4	-	dom	b
+rot.blackhole.cantv.net	ipv4	-	dom	b
+spam.blackhole.cantv.net	ipv4	-	dom	b
+cbl.abuseat.org	ipv4	-	-	b
+rbl.choon.net	ipv4	-	-	b
+rwl.choon.net	ipv4	-	-	w
+ipv6.rbl.choon.net	-	ipv6	-	b
+ipv6.rwl.choon.net	-	ipv6	-	w
+zz.countries.nerd.dk	ipv4	-	-	i
+dnsbl.cyberlogic.net	ipv4	-	-	b
+bogons.cymru.com	ipv4	-	-	b
+v4.fullbogons.cymru.com	ipv4	-	-	b
+v6.fullbogons.cymru.com	-	ipv6	-	b
+origin.asn.cymru.com	ipv4	-	-	i
+origin6.asn.cymru.com	-	ipv6	-	i
+peer.asn.cymru.com	ipv4	-	-	i
+tor.dan.me.uk	ipv4	ipv6	-	i
+torexit.dan.me.uk	ipv4	ipv6	-	b
+dnsbl.darklist.de	ipv4	-	-	b
+openproxy.bls.digibase.ca	ipv4	-	-	b
+proxyabuse.bls.digibase.ca	ipv4	-	-	b
+spambot.bls.digibase.ca	ipv4	-	-	b
+rbl.dns-servicios.com	ipv4	-	-	b
+dnsbl.abyan.es	ipv4	-	dom	b
+dnsbl.beetjevreemd.nl	ipv4	ipv6	-	b
+dnsbl.calivent.com.pe	ipv4	-	-	b
+dnsbl.isx.fr	ipv4	-	-	b
+dnsbl.mcu.edu.tw	ipv4	-	-	b
+dnsbl.net.ua	ipv4	-	-	b
+dnsbl.rv-soft.info	ipv4	-	-	b
+dnsblchile.org	ipv4	-	-	b
+dwl.dnswl.org	-	-	dom	w
+list.dnswl.org	ipv4	ipv6	-	w
+vote.drbl.caravan.ru	ipv4	-	-	b
+work.drbl.caravan.ru	ipv4	-	-	b
+vote.drbl.gremlin.ru	ipv4	-	-	b
+work.drbl.gremlin.ru	ipv4	-	-	b
+bl.drmx.org	ipv4	-	-	b
+dnsbl.dronebl.org	ipv4	ipv6	-	b
+dul.pacifier.net	ipv4	-	-	b
+rbl.efnet.org	ipv4	-	-	b
+rbl.efnetrbl.org	ipv4	-	-	b
+tor.efnet.org	ipv4	-	-	b
+rbl.fasthosts.co.uk	ipv4	-	-	b
+bl.fmb.la	ipv4	-	dom	b
+communicado.fmb.la	-	-	dom	b
+nsbl.fmb.la	-	-	dom	b
+sa.fmb.la	-	-	dom	c
+short.fmb.la	-	-	dom	b
+fnrbl.fast.net	ipv4	-	-	b
+forbidden.icm.edu.pl	ipv4	-	-	b
+88.blocklist.zap	ipv4	-	-	b
+hil.habeas.com	ipv4	-	-	b
+accredit.habeas.com	ipv4	-	-	w
+sa-accredit.habeas.com	ipv4	-	-	w
+hul.habeas.com	ipv4	-	-	w
+sohul.habeas.com	ipv4	-	-	w
+hostkarma.junkemailfilter.com	ipv4	-	dom	c
+black.junkemailfilter.com	ipv4	-	dom	b
+nobl.junkemailfilter.com	ipv4	-	dom	c
+dnsbl.cobion.com	ipv4	-	-	b
+spamrbl.imp.ch	ipv4	-	-	b
+wormrbl.imp.ch	ipv4	-	-	b
+rbl.interserver.net	ipv4	-	-	b
+(hidden)	ipv4	-	-	b
+(hidden)	ipv4	-	-	b
+(hidden)	-	-	dom	b
+rbl.iprange.net	ipv4	-	-	b
+rbl.ircbl.org	ipv4	-	-	b
+iadb.isipp.com	ipv4	-	-	w
+iadb2.isipp.com	ipv4	-	-	w
+iddb.isipp.com	-	-	dom	w
+wadb.isipp.com	ipv4	-	-	w
+whitelist.rbl.ispa.at	ipv4	-	-	w
+mail-abuse.blacklist.jippg.org	ipv4	-	-	b
+dnsbl.justspam.org	ipv4	-	-	b
+dnsbl.kempt.net	ipv4	-	-	b
+spamlist.or.kr	ipv4	-	-	b
+bl.konstant.no	ipv4	-	-	b
+krn.korumail.com	ipv4	-	-	c
+admin.bl.kundenserver.de	ipv4	-	-	b
+relays.bl.kundenserver.de	ipv4	-	-	b
+schizo-bl.kundenserver.de	ipv4	-	-	b
+spamblock.kundenserver.de	ipv4	-	-	b
+worms-bl.kundenserver.de	ipv4	-	-	b
+spamguard.leadmon.net	ipv4	-	-	b
+rbl.lugh.ch	ipv4	-	-	b
+dnsbl.madavi.de	ipv4	-	-	b
+niprbl.mailcleaner.net	ipv4	-	-	b
+uribl.mailcleaner.net	-	-	dom	b
+blacklist.mailrelay.att.net	ipv4	-	-	b
+bl.mailspike.net	ipv4	-	-	b
+rep.mailspike.net	ipv4	-	-	c
+wl.mailspike.net	ipv4	-	-	w
+z.mailspike.net	ipv4	-	-	b
+bl.mav.com.br	ipv4	-	-	b
+cidr.bl.mcafee.com	ipv4	-	-	b
+rbl.metunet.com	ipv4	-	-	b
+dnsbl.forefront.microsoft.com	ipv4	-	-	b
+bl.mipspace.com	ipv4	-	-	b
+combined.rbl.msrbl.net	ipv4	-	-	b
+images.rbl.msrbl.net	ipv4	-	-	b
+phishing.rbl.msrbl.net	ipv4	-	-	b
+spam.rbl.msrbl.net	ipv4	-	-	b
+virus.rbl.msrbl.net	ipv4	-	-	b
+web.rbl.msrbl.net	ipv4	-	-	b
+(hidden)	ipv4	-	-	c
+relays.nether.net	ipv4	-	-	b
+trusted.nether.net	ipv4	-	-	w
+unsure.nether.net	ipv4	-	-	b
+ix.dnsbl.manitu.net	ipv4	-	-	b
+dbl.nordspam.com	-	-	dom	b
+bl.nordspam.com	ipv4	ipv6	-	b
+bl.nosolicitado.org	ipv4	-	-	b
+bl.worst.nosolicitado.org	ipv4	-	-	b
+wl.nszones.com	ipv4	-	-	w
+dyn.nszones.com	ipv4	-	-	b
+sbl.nszones.com	ipv4	-	-	b
+bl.nszones.com	ipv4	-	-	b
+ubl.nszones.com	-	-	dom	b
+bl.octopusdns.com	ipv4	-	-	b
+blacklist.mail.ops.asp.att.net	ipv4	-	-	b
+blacklist.sequoia.ops.asp.att.net	ipv4	-	-	b
+spam.pedantic.org	ipv4	-	-	b
+pofon.foobar.hu	ipv4	ipv6	-	b
+ispmx.pofon.foobar.hu	ipv4	ipv6	-	w
+uribl.pofon.foobar.hu	-	-	dom	b
+bl.rbl.polspam.pl	ipv4	-	-	b
+bl-h1.rbl.polspam.pl	ipv4	-	-	b
+bl-h2.rbl.polspam.pl	ipv4	-	-	b
+bl-h3.rbl.polspam.pl	ipv4	-	-	b
+bl-h4.rbl.polspam.pl	ipv4	-	-	b
+bl6.rbl.polspam.pl	-	ipv6	-	b
+cnkr.rbl.polspam.pl	ipv4	-	-	b
+dyn.rbl.polspam.pl	ipv4	-	-	b
+ip4.white.polspam.pl	ipv4	-	-	w
+ip6.white.polspam.pl	-	ipv6	-	w
+lblip4.rbl.polspam.pl	ipv4	-	-	b
+lblip6.rbl.polspam.pl	-	ipv6	-	b
+rblip4.rbl.polspam.pl	ipv4	-	-	b
+rblip6.rbl.polspam.pl	-	ipv6	-	b
+rhsbl.rbl.polspam.pl	-	-	dom	b
+rhsbl-h.rbl.polspam.pl	-	-	dom	b
+(hidden)	ipv4	-	-	b
+(hidden)	ipv4	-	-	b
+safe.dnsbl.prs.proofpoint.com	ipv4	-	-	b
+psbl.surriel.com	ipv4	-	-	b
+whitelist.surriel.com	ipv4	-	-	w
+rbl.rbldns.ru	ipv4	-	-	b
+rbl.schulte.org	ipv4	-	-	b
+rbl.zenon.net	ipv4	-	-	b
+rbl.realtimeblacklist.com	ipv4	-	-	b
+access.redhawk.org	ipv4	-	-	b
+eswlrev.dnsbl.rediris.es	ipv4	ipv6	-	w
+mtawlrev.dnsbl.rediris.es	ipv4	ipv6	-	w
+abuse.rfc-clueless.org	-	-	dom	b
+bogusmx.rfc-clueless.org	-	-	dom	b
+dsn.rfc-clueless.org	-	-	dom	b
+elitist.rfc-clueless.org	-	-	dom	b
+fulldom.rfc-clueless.org	-	-	dom	b
+postmaster.rfc-clueless.org	-	-	dom	b
+mailsl.dnsbl.rjek.com	-	-	dom	b
+urlsl.dnsbl.rjek.com	-	-	dom	b
+asn.routeviews.org	ipv4	-	-	i
+aspath.routeviews.org	ipv4	-	-	i
+dnsbl.rymsho.ru	ipv4	-	-	b
+rhsbl.rymsho.ru	-	-	dom	b
+all.s5h.net	ipv4	ipv6	-	b
+public.sarbl.org	-	-	dom	b
+rhsbl.scientificspam.net	-	-	dom	b
+bl.scientificspam.net	ipv4	-	-	b
+reputation-domain.rbl.scrolloutf1.com	-	-	dom	c
+reputation-ip.rbl.scrolloutf1.com	ipv4	-	-	c
+reputation-ns.rbl.scrolloutf1.com	-	-	dom	c
+query.senderbase.org	ipv4	-	-	i
+sa.senderbase.org	ipv4	-	-	i
+rf.senderbase.org	ipv4	-	-	i
+bl.score.senderscore.com	ipv4	-	-	b
+score.senderscore.com	ipv4	-	-	c
+singular.ttk.pte.hu	ipv4	-	-	b
+blackholes.scconsult.com	ipv4	-	-	b
+dnsbl.sorbs.net	ipv4	-	-	b
+problems.dnsbl.sorbs.net	ipv4	-	-	b
+proxies.dnsbl.sorbs.net	ipv4	-	-	b
+relays.dnsbl.sorbs.net	ipv4	-	-	b
+safe.dnsbl.sorbs.net	ipv4	-	-	b
+nomail.rhsbl.sorbs.net	-	-	dom	b
+badconf.rhsbl.sorbs.net	-	-	dom	b
+dul.dnsbl.sorbs.net	ipv4	-	-	b
+zombie.dnsbl.sorbs.net	ipv4	-	-	b
+block.dnsbl.sorbs.net	ipv4	-	-	b
+escalations.dnsbl.sorbs.net	ipv4	-	-	b
+http.dnsbl.sorbs.net	ipv4	-	-	b
+misc.dnsbl.sorbs.net	ipv4	-	-	b
+smtp.dnsbl.sorbs.net	ipv4	-	-	b
+socks.dnsbl.sorbs.net	ipv4	-	-	b
+rhsbl.sorbs.net	-	-	dom	b
+spam.dnsbl.sorbs.net	ipv4	-	-	b
+recent.spam.dnsbl.sorbs.net	ipv4	-	-	b
+new.spam.dnsbl.sorbs.net	ipv4	-	-	b
+old.spam.dnsbl.sorbs.net	ipv4	-	-	b
+web.dnsbl.sorbs.net	ipv4	-	-	b
+korea.services.net	ipv4	-	-	b
+geobl.spameatingmonkey.net	ipv4	-	-	i
+origin.asn.spameatingmonkey.net	ipv4	-	-	i
+backscatter.spameatingmonkey.net	ipv4	-	-	b
+bl.spameatingmonkey.net	ipv4	-	-	b
+fresh.spameatingmonkey.net	-	-	dom	b
+fresh10.spameatingmonkey.net	-	-	dom	b
+fresh15.spameatingmonkey.net	-	-	dom	b
+fresh30.spameatingmonkey.net	-	-	dom	b
+freshzero.spameatingmonkey.net	-	-	dom	b
+bl.ipv6.spameatingmonkey.net	-	ipv6	-	b
+netbl.spameatingmonkey.net	ipv4	-	-	b
+uribl.spameatingmonkey.net	-	-	dom	b
+urired.spameatingmonkey.net	-	-	dom	b
+netblockbl.spamgrouper.to	ipv4	-	-	b
+all.spam-rbl.fr	ipv4	-	-	b
+bl.spamcop.net	ipv4	-	-	b
+sbl.spamdown.org	ipv4	-	-	b
+dbl.spamhaus.org	-	-	dom	b
+_vouch.dwl.spamhaus.org	-	-	dom	w
+pbl.spamhaus.org	ipv4	ipv6	-	b
+sbl.spamhaus.org	ipv4	ipv6	-	b
+sbl-xbl.spamhaus.org	ipv4	ipv6	-	b
+swl.spamhaus.org	ipv4	ipv6	-	w
+xbl.spamhaus.org	ipv4	ipv6	-	b
+zen.spamhaus.org	ipv4	ipv6	-	b
+feb.spamlab.com	ipv4	-	-	b
+rbl.spamlab.com	ipv4	-	-	b
+all.spamrats.com	ipv4	-	-	b
+auth.spamrats.com	ipv4	-	-	b
+dyna.spamrats.com	ipv4	-	-	b
+noptr.spamrats.com	ipv4	-	-	b
+spam.spamrats.com	ipv4	-	-	b
+spamsources.fabel.dk	ipv4	-	-	b
+abuse.spfbl.net	ipv4	ipv6	dom	i
+dnsbl.spfbl.net	ipv4	ipv6	dom	b
+score.spfbl.net	ipv4	ipv6	dom	c
+dnswl.spfbl.net	ipv4	ipv6	dom	w
+bl.suomispam.net	ipv4	ipv6	-	b
+dbl.suomispam.net	-	-	dom	b
+gl.suomispam.net	ipv4	ipv6	-	b
+multi.surbl.org	ipv4	-	dom	b
+srn.surgate.net	ipv4	-	-	c
+dnsrbl.swinog.ch	ipv4	-	-	b
+uribl.swinog.ch	-	-	dom	b
+rbl.tdk.net	ipv4	-	-	b
+st.technovision.dk	ipv4	-	-	b
+dob.sibl.support-intelligence.net	-	-	dom	b
+dbl.tiopan.com	-	-	dom	b
+bl.tiopan.com	ipv4	-	-	b
+dnsbl.tornevall.org	ipv4	-	-	b
+r.mail-abuse.com	ipv4	-	-	b
+q.mail-abuse.com	ipv4	-	-	b
+rbl2.triumf.ca	ipv4	-	-	b
+wbl.triumf.ca	ipv4	-	-	w
+truncate.gbudb.net	ipv4	-	-	b
+dunk.dnsbl.tuxad.de	ipv4	-	-	b
+hartkore.dnsbl.tuxad.de	ipv4	-	-	b
+dnsbl-0.uceprotect.net	ipv4	-	-	b
+dnsbl-1.uceprotect.net	ipv4	-	-	b
+dnsbl-2.uceprotect.net	ipv4	-	-	b
+dnsbl-3.uceprotect.net	ipv4	-	-	b
+ubl.unsubscore.com	ipv4	-	-	b
+black.uribl.com	-	-	dom	b
+grey.uribl.com	-	-	dom	b
+multi.uribl.com	-	-	dom	b
+red.uribl.com	-	-	dom	b
+white.uribl.com	-	-	dom	w
+free.v4bl.org	ipv4	-	-	b
+ip.v4bl.org	ipv4	-	-	b
+ips.whitelisted.org	ipv4	-	-	w
+blacklist.woody.ch	ipv4	-	-	b
+ipv6.blacklist.woody.ch	-	ipv6	-	b
+uri.blacklist.woody.ch	-	-	dom	b
+db.wpbl.info	ipv4	-	-	b
+bl.blocklist.de	ipv4	-	-	b
+dnsbl.zapbl.net	ipv4	-	-	b
+rhsbl.zapbl.net	-	-	dom	b
+d.bl.zenrbl.pl	-	-	dom	b
+ip4.bl.zenrbl.pl	ipv4	-	-	b

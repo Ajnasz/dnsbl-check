@@ -44,3 +44,24 @@ OK	127.0.0.2	dyn.rbl.polspam.pl
 FAIL	127.0.0.2	bl.spamcop.net	Blocked - see https://www.spamcop.net/bl.shtml?127.0.0.2
 ERR	127.0.0.2	spam.dnsbl.anonmails.de	lookup 2.0.0.127.spam.dnsbl.anonmails.de on 127.0.0.53:53: server misbehaving
 ```
+
+## Getting provider list
+
+List of providers coming from http://multirbl.valli.org/list/
+
+To get ipv4 blacklist providers run the following command:
+
+```sh
+awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers > ipv4providers
+```
+
+Then you can test if a provider is working - responds to a test query:
+
+```sh
+./dnsbl-check -p ipv4providers -i 127.0.0.2 > ipv4verified
+```
+
+Then with that list you can check if your IP address is blacklisted
+```sh
+./dnsbl-check -p ip4verified -i 1.2.3.4
+```
