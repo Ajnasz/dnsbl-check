@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"io"
@@ -149,29 +150,46 @@ func negate(f func(string) bool) func(string) bool {
 	}
 }
 
-func getProvidersFromFile(fn string) ([]byte, error) {
-	return os.ReadFile(fn)
+func getLines(reader io.Reader) []string {
+	scanner := bufio.NewScanner(reader)
+	scanner.Split(bufio.ScanLines)
+	var text []string
+	for scanner.Scan() {
+		text = append(text, scanner.Text())
+	}
+
+	return text
 }
 
-func getProvidersFromStdin() ([]byte, error) {
-	return io.ReadAll(os.Stdin)
+func getProvidersFromFile(fn string) ([]string, error) {
+	file, err := os.Open(fn)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	return getLines(file), nil
+}
+
+func getProvidersFromStdin() ([]string, error) {
+	text := getLines(os.Stdin)
+
+	return text, nil
 }
 
 func getProviders(fn string) ([]string, error) {
-	var f []byte
+	var lines []string
 	var err error
 
-	if fn == "-" {
-		f, err = getProvidersFromStdin()
+	if fn == "" || fn == "-" {
+		lines, err = getProvidersFromStdin()
 	} else {
-		f, err = getProvidersFromFile(fn)
+		lines, err = getProvidersFromFile(fn)
 	}
 
 	if err != nil {
 		return nil, err
 	}
-
-	lines := strings.Split(string(f), "\n")
 
 	trimmed := mapString(lines, strings.TrimSpace)
 	noEmpty := filterString(trimmed, negate(isEmptyString))
@@ -201,7 +219,7 @@ func processLookupResult(result LookupResult) {
 }
 
 func main() {
-	var domainsFile = flag.String("p", "./providers", "path to file which stores list of dnsbl checks, - for stdin")
+	var domainsFile = flag.String("p", "", "path to file which stores list of dnsbl checks, empty or - for stdin")
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()
