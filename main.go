@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 	"sync"
-	"unsafe"
 )
 
 func getToken(str, delimiter, out string) string {
@@ -223,7 +222,7 @@ func main() {
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()
-	list, err := getProviders(*domainsFile)
+	list, err := getProvidersChan(*domainsFile)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error reading domains")
@@ -232,17 +231,15 @@ func main() {
 
 	var providers []DNSBLProvider
 
-	s := 0
-	for _, item := range list {
+	for item := range list {
 		provider := GeneralDNSBLProvider{
 			URL: item,
 		}
-		s += int(unsafe.Sizeof(provider))
+
 		providers = append(providers, provider)
 	}
 
 	addresses := filterString(strings.Split(*addressesParam, ","), negate(isEmptyString))
-
 	for result := range getBlacklists(addresses, providers) {
 		processLookupResult(result)
 	}
