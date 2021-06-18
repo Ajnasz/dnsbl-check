@@ -49,19 +49,21 @@ ERR	127.0.0.2	spam.dnsbl.anonmails.de	lookup 2.0.0.127.spam.dnsbl.anonmails.de o
 
 List of providers coming from http://multirbl.valli.org/list/
 
+### IPv4 providers
+
 To get ipv4 blacklist providers run the following command:
 
 ```sh
 awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers > ipv4providers
 ```
 
-Then you can test if a provider is working - responds to a test query:
+Then you can test if a provider is working - responds to a test query (query the address [127.0.0.2](https://datatracker.ietf.org/doc/html/rfc5782#section-5)):
 
 ```sh
-./dnsbl-check -p ipv4providers -i 127.0.0.2 | awk '$1 == "ERR" { print $3 }' > ipv4verified
+./dnsbl-check -p ipv4providers -i 127.0.0.2 | awk '$1 == "FAIL" { print $3 }' > ipv4verified
 ```
 
-Then with that list you can check if your IP address is blacklisted:
+Then with that list you can check if your IP address (1.2.3.4) is blacklisted:
 
 ```sh
 ./dnsbl-check -p ip4verified -i 1.2.3.4
@@ -70,8 +72,36 @@ Then with that list you can check if your IP address is blacklisted:
 It can be piped into one command:
 ```sh
 awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers | \
-./dnsbl-check -p ipv4providers -i 127.0.0.2 | awk '$1 == "ERR" { print $3 }' | \
-./dnsbl-check -p ip4verified -i 1.2.3.4
+./dnsbl-check -p - -i 127.0.0.2 | awk '$1 == "FAIL" { print $3 }' | \
+./dnsbl-check -p - -i 1.2.3.4
 ```
 
 However it's recommended to keep the used provider list separetly, to save the resources of the providers.
+
+### Domain providers:
+
+Similar to the IPv4 providers, but we filter the multirbl list to items which are maintaining balck lists of domains:
+
+```sh
+awk '$5 == "b" && $4 == "dom" && $1 != "(hidden)" { print $1 }' < providers > domain_providers
+```
+
+Then check if the provider is looking good query the address [TEST](https://datatracker.ietf.org/doc/html/rfc5782#section-5)
+
+```sh
+./dnsbl-check -p domain_providers -i TEST | awk '$1 == "FAIL" { print$3 }' > domain_providers_verified
+```
+
+You can check the address `INVALID` as well, which should return `OK`:
+
+```sh
+./dnsbl-check -p domain_providers -i TEST | awk '$1 == "FAIL" { print $3 }' | \
+./dnsbl-check -p - -i INVALID  | awk '$1 == "OK" { print $3 }' > domain_providers_verified
+
+```
+
+Then you can query your domain:
+
+```sh
+./dnsbl-check -p domain_providers_verified -i mail.example.com
+```
