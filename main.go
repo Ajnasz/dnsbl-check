@@ -149,7 +149,7 @@ func negate(f func(string) bool) func(string) bool {
 	}
 }
 
-func getLines(reader io.Reader) []string {
+func readLines(reader io.Reader) []string {
 	scanner := bufio.NewScanner(reader)
 	scanner.Split(bufio.ScanLines)
 	var text []string
@@ -167,11 +167,11 @@ func getProvidersFromFile(fn string) ([]string, error) {
 	}
 	defer file.Close()
 
-	return getLines(file), nil
+	return readLines(file), nil
 }
 
 func getProvidersFromStdin() ([]string, error) {
-	text := getLines(os.Stdin)
+	text := readLines(os.Stdin)
 
 	return text, nil
 }
