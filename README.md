@@ -17,7 +17,7 @@ The addresses must be passed with the `-i` parameter to the command. Multiple ad
 
 ## Build
 
-```
+```sh
 go build
 ```
 
@@ -33,7 +33,7 @@ Variations for the same operation:
 ./dnsbl-check -i 1.2.3.4 -p - < providers
 ```
 
-```
+```sh
 cat providers | ./dnsbl-check -i 1.2.3.4 -p -
 ```
 
@@ -42,14 +42,16 @@ cat providers | ./dnsbl-check -i 1.2.3.4 -p -
 The program returns every result in a new line, fields are separated by TAB character `\t`.
 
 The line starts with the status: `OK` or `FAIL` or `ERR`
+
 - `OK` returned if no listing found for the address
 - `FAIL` returned if listing found for the address
 - `ERR` returned if the address lookup failed
+
 Second field is the address
 Third field is the provider
 Fourth field is filled only if the status is either `FAIL` or `ERR`. If the status is `FAIL` and no reason returned from te provider, the `unknown reason` text will be shown. If the status is `ERR` the error message will be shown here.
 
-```
+```text
 OK	127.0.0.2	dyn.rbl.polspam.pl
 FAIL	127.0.0.2	bl.spamcop.net	Blocked - see https://www.spamcop.net/bl.shtml?127.0.0.2
 ERR	127.0.0.2	spam.dnsbl.anonmails.de	lookup 2.0.0.127.spam.dnsbl.anonmails.de on 127.0.0.53:53: server misbehaving
@@ -57,7 +59,7 @@ ERR	127.0.0.2	spam.dnsbl.anonmails.de	lookup 2.0.0.127.spam.dnsbl.anonmails.de o
 
 ## Getting provider list
 
-List of providers coming from http://multirbl.valli.org/list/
+List of providers coming from [http://multirbl.valli.org/list/](http://multirbl.valli.org/list/)
 
 ### IPv4 providers
 
@@ -80,6 +82,7 @@ Then with that list you can check if your IP address (1.2.3.4) is blacklisted:
 ```
 
 It can be piped into one command:
+
 ```sh
 awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers | \
 ./dnsbl-check -p - -i 127.0.0.2 | awk '$1 == "FAIL" { print $3 }' | \
@@ -88,7 +91,7 @@ awk '$5 == "b" && $2 == "ipv4" && $1 != "(hidden)" { print $1 }' < providers | \
 
 However it's recommended to keep the used provider list separately, to save the resources of the providers.
 
-### Domain providers:
+### Domain providers
 
 Similar to the IPv4 providers, but we filter the multirbl list to items which are maintaining balck lists of domains:
 
