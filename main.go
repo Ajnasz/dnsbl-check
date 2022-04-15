@@ -10,33 +10,22 @@ import (
 	"sync"
 )
 
-func getToken(str, delimiter string) string {
-	s, _, _ := strings.Cut(str, delimiter)
-	return s
-}
-
-func reverseStringByToken(str string, delimiter string, out string) string {
+func reverseStringByToken(str string, delimiter string) string {
 	if str == "" {
-		return out
+		return ""
 	}
 
-	token := getToken(str, delimiter)
+	before, after, found := strings.Cut(str, delimiter)
 
-	if out == "" {
-		out = token
-	} else {
-		out = token + delimiter + out
+	if !found {
+		return before
 	}
 
-	if len(str) <= len(token)+1 {
-		return out
-	}
-
-	return reverseStringByToken(str[len(token)+1:], delimiter, out)
+	return reverseStringByToken(after, delimiter) + delimiter + before
 }
 
 func reverseIPAddress(str string) string {
-	return reverseStringByToken(str, ".", "")
+	return reverseStringByToken(str, ".")
 }
 
 // DNSBLProvider interface should be implemented to be able to query a provider
