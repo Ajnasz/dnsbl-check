@@ -58,7 +58,7 @@ subcommand="$1"
 shift
 case "$subcommand" in
 	"test")
-		go test -v -tags test
+		go test -v -tags test ./...
 		return
 		;;
 	"build")
