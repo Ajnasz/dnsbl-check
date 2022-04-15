@@ -1,4 +1,4 @@
-package main
+package providerlist
 
 import (
 	"bufio"
@@ -8,6 +8,21 @@ import (
 
 	"github.com/Ajnasz/dnsbl-check/stringutils"
 )
+
+func negate(f func(string) bool) func(string) bool {
+	return func(str string) bool {
+		r := f(str)
+		return !r
+	}
+}
+
+func isCommentLine(line string) bool {
+	return strings.HasPrefix(line, "#")
+}
+
+func isEmptyString(str string) bool {
+	return str == ""
+}
 
 func readLines(reader io.Reader) []string {
 	scanner := bufio.NewScanner(reader)
@@ -104,7 +119,7 @@ func getProvidersFromStdinChan() (chan string, error) {
 	return text, nil
 }
 
-func getProvidersChan(fn string) (chan string, error) {
+func GetProvidersChan(fn string) (chan string, error) {
 	var lines chan string
 	var err error
 
@@ -119,23 +134,12 @@ func getProvidersChan(fn string) (chan string, error) {
 	}
 
 	trimmed := stringutils.MapChan(strings.TrimSpace, lines)
-	noEmpty := filterStringChan(negate(isEmptyString), trimmed)
-	noComment := filterStringChan(negate(isCommentLine), noEmpty)
+	noEmpty := stringutils.FilterChan(negate(isEmptyString), trimmed)
+	noComment := stringutils.FilterChan(negate(isCommentLine), noEmpty)
 
 	return noComment, nil
 }
 
-func filterStringChan(test func(string) bool, lines chan string) chan string {
-	out := make(chan string)
-
-	go func() {
-		defer close(out)
-		for line := range lines {
-			if test(line) {
-				out <- line
-			}
-		}
-	}()
-
-	return out
+func GetAddresses(addresses string) []string {
+	return stringutils.Filter(strings.Split(addresses, ","), negate(isEmptyString))
 }

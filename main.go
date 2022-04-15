@@ -4,11 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/Ajnasz/dnsbl-check/dnsblprovider"
-	"github.com/Ajnasz/dnsbl-check/stringutils"
+	"github.com/Ajnasz/dnsbl-check/providerlist"
 )
 
 // LookupResult stores the query result with reason
@@ -70,21 +69,6 @@ func getBlacklists(addresses []string, providers []dnsblprovider.DNSBLProvider) 
 	return results
 }
 
-func isCommentLine(line string) bool {
-	return strings.HasPrefix(line, "#")
-}
-
-func isEmptyString(str string) bool {
-	return str == ""
-}
-
-func negate(f func(string) bool) func(string) bool {
-	return func(str string) bool {
-		r := f(str)
-		return !r
-	}
-}
-
 func processLookupResult(result LookupResult) {
 	if result.Error != nil {
 		fmt.Println(fmt.Sprintf("ERR\t%s\t%s\t%s", result.Address, result.Provider.GetName(), result.Error))
@@ -110,7 +94,7 @@ func main() {
 	var addressesParam = flag.String("i", "", "IP Address to check, separate by comma for a list")
 
 	flag.Parse()
-	list, err := getProvidersChan(*domainsFile)
+	list, err := providerlist.GetProvidersChan(*domainsFile)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error reading domains")
@@ -127,7 +111,7 @@ func main() {
 		providers = append(providers, provider)
 	}
 
-	addresses := stringutils.Filter(strings.Split(*addressesParam, ","), negate(isEmptyString))
+	addresses := providerlist.GetAddresses(*addressesParam)
 	for result := range getBlacklists(addresses, providers) {
 		processLookupResult(result)
 	}

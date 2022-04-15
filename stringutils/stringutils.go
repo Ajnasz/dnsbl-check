@@ -34,3 +34,18 @@ func MapChan(conv func(string) string, lines chan string) chan string {
 
 	return out
 }
+
+func FilterChan(test func(string) bool, lines chan string) chan string {
+	out := make(chan string)
+
+	go func() {
+		defer close(out)
+		for line := range lines {
+			if test(line) {
+				out <- line
+			}
+		}
+	}()
+
+	return out
+}
