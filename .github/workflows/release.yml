@@ -32,6 +32,10 @@ jobs:
 
     - name: Test
       run: |
+        ./build.sh test
+
+    - name: Build
+      run: |
         ./build.sh build
 
     - run: |
