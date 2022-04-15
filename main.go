@@ -8,25 +8,20 @@ import (
 	"os"
 	"strings"
 	"sync"
-)
 
-// DNSBLProvider interface should be implemented to be able to query a provider
-type DNSBLProvider interface {
-	GetName() string
-	IsBlacklisted(string) (bool, error)
-	GetReason(string) (string, error)
-}
+	"github.com/Ajnasz/dnsbl-check/dnsblprovider"
+)
 
 // LookupResult stores the query result with reason
 type LookupResult struct {
 	IsBlacklisted bool
 	Address       string
 	Reason        string
-	Provider      DNSBLProvider
+	Provider      dnsblprovider.DNSBLProvider
 	Error         error
 }
 
-func lookup(address string, provider DNSBLProvider) LookupResult {
+func lookup(address string, provider dnsblprovider.DNSBLProvider) LookupResult {
 	isListed, err := provider.IsBlacklisted(address)
 	if err != nil {
 		return LookupResult{
@@ -55,13 +50,13 @@ func lookup(address string, provider DNSBLProvider) LookupResult {
 	}
 }
 
-func getBlacklists(addresses []string, providers []DNSBLProvider) chan LookupResult {
+func getBlacklists(addresses []string, providers []dnsblprovider.DNSBLProvider) chan LookupResult {
 	var wg sync.WaitGroup
 	results := make(chan LookupResult)
 	for _, address := range addresses {
 		for _, provider := range providers {
 			wg.Add(1)
-			go func(address string, provider DNSBLProvider) {
+			go func(address string, provider dnsblprovider.DNSBLProvider) {
 				defer wg.Done()
 				results <- lookup(address, provider)
 			}(address, provider)
@@ -193,10 +188,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	var providers []DNSBLProvider
+	var providers []dnsblprovider.DNSBLProvider
 
 	for item := range list {
-		provider := GeneralDNSBLProvider{
+		provider := dnsblprovider.GeneralProvider{
 			URL: item,
 		}
 
