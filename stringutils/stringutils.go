@@ -1,5 +1,7 @@
 package stringutils
 
+// Filter filters the slice of string by the given test func and keeps only
+// those entries where the test returned true
 func Filter(lines []string, test func(string) bool) []string {
 	var out []string
 
@@ -12,6 +14,7 @@ func Filter(lines []string, test func(string) bool) []string {
 	return out
 }
 
+// Map returns the output conv function which executed on all entires
 func Map(lines []string, conv func(string) string) []string {
 	var out []string
 
@@ -22,6 +25,7 @@ func Map(lines []string, conv func(string) string) []string {
 	return out
 }
 
+// MapChan enables to alter the input strings and emit them from a channel
 func MapChan(conv func(string) string, lines chan string) chan string {
 	out := make(chan string)
 
@@ -35,6 +39,8 @@ func MapChan(conv func(string) string, lines chan string) chan string {
 	return out
 }
 
+// FilterChan reads items from a string channel, and emits only those where the
+// test function returned true
 func FilterChan(test func(string) bool, lines chan string) chan string {
 	out := make(chan string)
 

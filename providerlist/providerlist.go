@@ -119,6 +119,7 @@ func getProvidersFromStdinChan() (chan string, error) {
 	return text, nil
 }
 
+// GetProvidersChan returns a channel which will emit available providers
 func GetProvidersChan(fn string) (chan string, error) {
 	var lines chan string
 	var err error
@@ -140,6 +141,7 @@ func GetProvidersChan(fn string) (chan string, error) {
 	return noComment, nil
 }
 
+// GetAddresses will split the comma separated addresses by the comma and return them as a slice
 func GetAddresses(addresses string) []string {
 	return stringutils.Filter(strings.Split(addresses, ","), negate(isEmptyString))
 }
