@@ -10,24 +10,6 @@ import (
 	"sync"
 )
 
-func reverseStringByToken(str string, delimiter string) string {
-	if str == "" {
-		return ""
-	}
-
-	before, after, found := strings.Cut(str, delimiter)
-
-	if !found {
-		return before
-	}
-
-	return reverseStringByToken(after, delimiter) + delimiter + before
-}
-
-func reverseIPAddress(str string) string {
-	return reverseStringByToken(str, ".")
-}
-
 // DNSBLProvider interface should be implemented to be able to query a provider
 type DNSBLProvider interface {
 	GetName() string

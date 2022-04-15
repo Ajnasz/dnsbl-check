@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"strings"
+
+	"github.com/Ajnasz/dnsbl-check/iputils"
 )
 
 func isNoHostError(err error) bool {
@@ -24,7 +26,7 @@ type GeneralDNSBLProvider struct {
 // Combines the IP address (octets reversed) and the provider URL
 func (provider GeneralDNSBLProvider) getAddress(address string) string {
 	if provider.isIPAddress(address) {
-		return fmt.Sprintf("%s.%s", reverseIPAddress(address), provider.URL)
+		return fmt.Sprintf("%s.%s", iputils.ReverseIPv4Address(address), provider.URL)
 	}
 
 	return fmt.Sprintf("%s.%s", address, provider.URL)
