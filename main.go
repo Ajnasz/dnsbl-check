@@ -10,16 +10,9 @@ import (
 	"sync"
 )
 
-func getToken(str, delimiter, out string) string {
-	if str == "" {
-		return out
-	}
-
-	if string(str[0]) == delimiter {
-		return out
-	}
-
-	return getToken(str[1:], delimiter, out+string(str[0]))
+func getToken(str, delimiter string) string {
+	s, _, _ := strings.Cut(str, delimiter)
+	return s
 }
 
 func reverseStringByToken(str string, delimiter string, out string) string {
@@ -27,7 +20,7 @@ func reverseStringByToken(str string, delimiter string, out string) string {
 		return out
 	}
 
-	token := getToken(str, delimiter, "")
+	token := getToken(str, delimiter)
 
 	if out == "" {
 		out = token
