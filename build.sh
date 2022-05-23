@@ -8,12 +8,13 @@ build() {
 	ARCHLIST="$1"
 	OSLIST="$2"
 	BUILD_DIR="$3"
-	FILE_NAME="dnsbl-check"
 
 	echo "$VERSION"
 	echo "$BUILD"
 
 	mkdir -p "$BUILD_DIR"
+
+	cd "$CUR_PATH/cmd/dnsbl-check"
 
 	for os in $OSLIST
 	do
@@ -46,7 +47,9 @@ remove() {
 REMOVE=0
 OSLIST="linux darwin"
 ARCHLIST="amd64 arm64 arm"
-BUILD_DIR="./build"
+CUR_PATH="$(dirname "$(realpath "$0")")"
+BUILD_DIR="$CUR_PATH/build"
+FILE_NAME="dnsbl-check"
 BUILD=0
 
 if [ $# -lt 1 ];then
