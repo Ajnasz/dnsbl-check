@@ -73,5 +73,4 @@ func (provider GeneralProvider) IsBlacklisted(address string) (bool, error) {
 	}
 
 	return true, nil
-
 }

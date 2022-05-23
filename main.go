@@ -52,8 +52,8 @@ func getBlacklists(addresses []string, providers []dnsblprovider.DNSBLProvider) 
 	var wg sync.WaitGroup
 	results := make(chan LookupResult)
 	for _, address := range addresses {
+		wg.Add(len(providers))
 		for _, provider := range providers {
-			wg.Add(1)
 			go func(address string, provider dnsblprovider.DNSBLProvider) {
 				defer wg.Done()
 				results <- lookup(address, provider)
