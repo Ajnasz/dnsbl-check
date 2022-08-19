@@ -2,6 +2,10 @@
 
 Checks if the given IP address(es) are listed at the given dnsrbl provider(s).
 
+DNSRBL lists are used to fight against e-mail spams. They detect and list IP addresses that are used to send unwanted e-mails. When an e-mail sent from a blacklisted address, the anti-spam software will mark the message as Spam.
+
+This software is useful for sysadmins who operates MTA (Mail Transfer Agent) softwares and want to see if their IP address they use to send e-mail is listed on an RBL list - therefore they can see a reason why some clients doesn't receive e-mail.
+
 ## Providers
 
 Providers must be listed in a file, one line should be one provider.
@@ -23,18 +27,20 @@ go build
 
 ## Execute
 
+Test if the IP address `1.2.3.4` is blacklisted in providers listed in `providers` file (see [how to get provider list](#getting-provider-list) section):
+
 Variations for the same operation:
 
 ```sh
-./dnsbl-check -i 1.2.3.4 -p providers
+./dnsbl-check -i 1.2.3.4 -p ipv4providers
 ```
 
 ```sh
-./dnsbl-check -i 1.2.3.4 -p - < providers
+./dnsbl-check -i 1.2.3.4 -p - < ipv4providers
 ```
 
 ```sh
-cat providers | ./dnsbl-check -i 1.2.3.4 -p -
+cat ipv4providers | ./dnsbl-check -i 1.2.3.4 -p -
 ```
 
 ## Output
